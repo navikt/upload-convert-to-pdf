@@ -8,7 +8,7 @@ metadata:
   annotations:
     nais.io/run-as-user: "1001"
 spec:
-  image: ghcr.io/navikt/upload-convert-to-pdf/gotenberg:8
+  image: ghcr.io/navikt/upload-convert-to-pdf/gotenberg:8.0.0
   command:
     - "gotenberg"
     - "--api-disable-health-check-logging"
