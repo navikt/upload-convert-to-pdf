@@ -16,4 +16,4 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/dev-gcp.yaml
+          RESOURCE: .nais/dev-gcp.yml
