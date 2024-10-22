@@ -1,0 +1,39 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: upload-convert-to-pdf
+  namespace: team-soknad
+  labels:
+    team: team-soknad
+  annotations:
+    nais.io/run-as-user: "1001"
+spec:
+  image: ghcr.io/navikt/upload-convert-to-pdf/gotenberg:8
+  command:
+    - "gotenberg"
+    - "--api-disable-health-check-logging"
+    - "--libreoffice-auto-start"
+    - "--webhook-disable"
+  port: 3000
+  liveness:
+    path: /health
+    initialDelay: 60
+    timeout: 5
+    failureThreshold: 10
+  accessPolicy:
+    inbound:
+      rules:
+        - application: innsending-api
+  ingresses:
+    - "https://convert-to-pdf.intern.dev.nav.no/"
+  replicas:
+    min: 1
+    max: 4
+  resources:
+    # for lite ressurser allokert kan føre til 503: Service Unavailable fra applikasjonen skjedde med cpu: 200m / mem: 500Mi
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
