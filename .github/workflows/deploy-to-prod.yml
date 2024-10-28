@@ -1,7 +1,13 @@
-name: Deploy to dev-gcp
+name: Deploy to prod-gcp
 
 on:
-  workflow_dispatch:
+  workflow_call:
+  push:
+    branches:
+      - 'main'
+    paths-ignore:
+      - '**.md'
+      - '**/**.md'
 
 permissions:
   contents: "write"
@@ -9,12 +15,12 @@ permissions:
 
 jobs:
   deploy:
-    name: "Deploy to PREPROD"
+    name: "Deploy to PROD"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
-          CLUSTER: dev-gcp
+          CLUSTER: prod-gcp
           RESOURCE: .nais/nais-gcp.yml
-          VARS: .nais/preprod-config.json
+          VARS: .nais/prod-config.json

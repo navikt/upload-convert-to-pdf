@@ -1,0 +1,12 @@
+{
+  "accessPolicyInbound": {
+    "current-namespace": [
+      "innsending-api"
+    ],
+    "other-namespace": []
+  },
+  "ingresses": [
+    "https://convert-to-pdf.intern.nav.no/",
+    "httos://www.nav.no/convert-to-pdf"
+  ]
+}

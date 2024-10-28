@@ -1,0 +1,45 @@
+name: Manually triggered deployment
+
+run-name: Manual ${{ github.event.inputs.environment }} deploy of branch ${{ github.head_ref || github.ref_name }}
+
+permissions:
+  contents: "write"
+  id-token: "write"
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'preprod'
+        type: choice
+        options:
+          - none
+          - preprod
+          - prod
+
+jobs:
+  deploy-prod:
+    if: github.event.inputs.environment == 'prod'
+    name: "Deploy to PROD"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/prod-config.json
+
+  deploy-preprod:
+    if: github.event.inputs.environment == 'preprod'
+    name: "Deploy to PREPROD"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/preprod-config.json

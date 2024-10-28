@@ -23,9 +23,17 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: innsending-api
+      {{#each accessPolicyInbound.current-namespace}}
+         - application: "{{this}}"
+                          {{/each}}
+      {{#each accessPolicyInbound.other-namespace}}
+         - application: "{{this.application}}"
+             namespace: "{{this.namespace}}"
+             {{/each}}
   ingresses:
-    - "https://convert-to-pdf.intern.dev.nav.no/"
+  {{#each ingresses}}
+     - "{{this}}"
+         {{/each}}
   replicas:
     min: 1
     max: 4
