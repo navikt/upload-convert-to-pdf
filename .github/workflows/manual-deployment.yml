@@ -21,6 +21,7 @@ on:
 
 
 jobs:
+
   deploy-prod:
     if: github.event.inputs.environment == 'prod'
     name: "Deploy to PROD"
@@ -32,7 +33,7 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
-          VAR:  image=ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+          REF: ${{ github.sha }}
 
 
   deploy-preprod:
@@ -46,5 +47,5 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
-          VAR: image=ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+          REF: ${{ github.sha }}
 
