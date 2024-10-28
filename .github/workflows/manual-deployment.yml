@@ -32,7 +32,7 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
-          VAR: ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+          VAR:  image=ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
 
 
   deploy-preprod:
@@ -46,5 +46,5 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
-          VAR: ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+          VAR: image= ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
 
