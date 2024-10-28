@@ -31,6 +31,7 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
+          REF: ${{ github.sha }}
 
   deploy-preprod:
     if: github.event.inputs.environment == 'preprod'
@@ -43,3 +44,4 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
+          REF: ${{ github.sha }}
