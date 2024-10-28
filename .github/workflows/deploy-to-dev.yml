@@ -18,3 +18,4 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
+          REF: ${{ github.sha }}
