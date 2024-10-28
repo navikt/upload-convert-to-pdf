@@ -9,21 +9,25 @@ metadata:
     nais.io/run-as-user: "1001"
 spec:
   image: ghcr.io/navikt/sosialhjelp-konvertering-til-pdf/gotenberg:8.0.0
+
   command:
     - "gotenberg"
     - "--api-disable-health-check-logging"
     - "--libreoffice-auto-start"
     - "--webhook-disable"
   port: 3000
+
   liveness:
     path: /health
     initialDelay: 60
     timeout: 5
     failureThreshold: 10
+
   ingresses:
   {{#each ingresses}}
     - "{{this}}"
   {{/each}}
+
   accessPolicy:
     inbound:
       rules:
@@ -34,6 +38,7 @@ spec:
         - application: "{{this.application}}"
           namespace: "{{this.namespace}}"
        {{/each}}
+
   replicas:
     min: 1
     max: 4

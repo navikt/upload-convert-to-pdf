@@ -7,6 +7,6 @@
     "other-namespace": []
   },
   "ingresses": [
-    "https://convert-to-pdf.intern.dev.nav.no/"
+    "https://convert-to-pdf.intern.dev.nav.no"
   ]
 }
