@@ -24,16 +24,16 @@ spec:
     inbound:
       rules:
       {{#each accessPolicyInbound.current-namespace}}
-         - application: "{{this}}"
-                          {{/each}}
+        - application: "{{this}}"
+      {{/each}}
       {{#each accessPolicyInbound.other-namespace}}
-         - application: "{{this.application}}"
-             namespace: "{{this.namespace}}"
-             {{/each}}
+        - application: "{{this.application}}"
+          namespace: "{{this.namespace}}"
+       {{/each}}
   ingresses:
   {{#each ingresses}}
-     - "{{this}}"
-         {{/each}}
+    - "{{this}}"
+  {{/each}}
   replicas:
     min: 1
     max: 4
