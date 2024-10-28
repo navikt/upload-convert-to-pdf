@@ -20,6 +20,10 @@ spec:
     initialDelay: 60
     timeout: 5
     failureThreshold: 10
+  ingresses:
+  {{#each ingresses}}
+    - "{{this}}"
+  {{/each}}
   accessPolicy:
     inbound:
       rules:
@@ -30,10 +34,6 @@ spec:
         - application: "{{this.application}}"
           namespace: "{{this.namespace}}"
        {{/each}}
-  ingresses:
-  {{#each ingresses}}
-    - "{{this}}"
-  {{/each}}
   replicas:
     min: 1
     max: 4
