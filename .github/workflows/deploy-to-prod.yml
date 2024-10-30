@@ -24,4 +24,4 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
-          REF: ${{ github.sha }}
+

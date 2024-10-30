@@ -1,12 +1,18 @@
 {
   "accessPolicyInbound": {
-    "current-namespace": [
-      "innsending-api",
-      "innsending-api-loadtests"
-    ],
-    "other-namespace": []
+    "current-namespace": [],
+    "other-namespace": [
+      {
+        "application": "innsending-api",
+        "namespace": "team-soknad"
+      },
+      {
+        "application": "innsending-api-loadtests",
+        "namespace": "team-soknad"
+      }
+    ]
   },
   "ingresses": [
-    "https://convert-to-pdf.intern.dev.nav.no/"
+    "https://convert-to-pdf.intern.dev.nav.no"
   ]
 }
