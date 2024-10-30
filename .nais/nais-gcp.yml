@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: upload-convert-to-pdf
-  namespace: team-soknad
+  namespace: fyllut-sendinn
   labels:
-    team: team-soknad
+    team: fyllut-sendinn
   annotations:
     nais.io/run-as-user: "1001"
 spec:
