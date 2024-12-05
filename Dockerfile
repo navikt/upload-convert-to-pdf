@@ -14,7 +14,7 @@ RUN apt-get update -qq &&\
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ENV LANG=nb_NO.UTF-8
-ENV LANGUAGE=nb_NO:no
+ENV LANGUAGE=nb_NO:nb
 ENV LC_ALL=nb_NO.UTF-8
 
 USER gotenberg
