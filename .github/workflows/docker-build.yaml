@@ -1,0 +1,35 @@
+name: Build docker image
+run-name: Build docker image ${{ github.event.inputs.navGotenbergVersion || github.event.inputs.gotenbergVersion }} (Gotenberg ${{ github.event.inputs.gotenbergVersion }})
+
+on:
+  workflow_dispatch:
+    inputs:
+      gotenbergVersion:
+        description: 'Version of Gotenberg to upgrade to'
+        required: true
+        type: string
+      navGotenbergVersion:
+        description: 'Version of NAV image. Defaults to the Gotenberg version, but if that is already published we can specify some other version here.'
+        required: false
+        type: string
+
+jobs:
+  build:
+    name: "Build"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      packages: 'write'
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Build and push Docker image"
+        uses: nais/docker-build-push@v0
+        with:
+          team: fyllut-sendinn
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          build_args: |
+            version=${{ inputs.gotenbergVersion }}
+          pull: true
+          tag: ${{ github.event.inputs.navGotenbergVersion || github.event.inputs.gotenbergVersion }}
