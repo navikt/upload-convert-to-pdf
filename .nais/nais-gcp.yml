@@ -22,6 +22,9 @@ spec:
     initialDelay: 60
     timeout: 5
     failureThreshold: 10
+  prometheus:
+    enabled: true
+    path: /prometheus/metrics
 
   ingresses:
   {{#each ingresses}}
