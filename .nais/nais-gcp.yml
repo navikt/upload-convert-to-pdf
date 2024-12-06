@@ -22,6 +22,9 @@ spec:
     initialDelay: 60
     timeout: 5
     failureThreshold: 10
+  prometheus:
+    enabled: true
+    path: /prometheus/metrics
 
   ingresses:
   {{#each ingresses}}
@@ -40,7 +43,7 @@ spec:
        {{/each}}
 
   replicas:
-    min: 1
+    min: 2
     max: 4
   resources:
     # for lite ressurser allokert kan føre til 503: Service Unavailable fra applikasjonen skjedde med cpu: 200m / mem: 500Mi
