@@ -15,7 +15,7 @@ spec:
     - "--api-disable-health-check-logging"
     - "--libreoffice-auto-start"
     - "--webhook-disable"
-    - "-api-timeout 120s"
+    - "--api-timeout 120s"
   port: 3000
 
   liveness:
