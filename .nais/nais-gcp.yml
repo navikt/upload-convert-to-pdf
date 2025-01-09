@@ -7,6 +7,11 @@ metadata:
     team: fyllut-sendinn
   annotations:
     nais.io/run-as-user: "1001"
+    nginx.ingress.kubernetes.io/proxy-body-size: "51M"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+
 spec:
   image: europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:8.0.0
 
