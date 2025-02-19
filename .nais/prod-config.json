@@ -5,6 +5,10 @@
       {
         "application": "innsending-api",
         "namespace": "team-soknad"
+      },
+      {
+        "application": "skjemautfylling",
+        "namespace": "skjemadigitalisering"
       }
     ]
   },
