@@ -46,4 +46,10 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
-
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/preprod-config.json
+          VAR: app-name="upload-convert-to-pdf-en", image="europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:en-8.17.3"
