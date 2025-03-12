@@ -46,6 +46,13 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
+
+  deploy-preprod-en:
+    if: github.event.inputs.environment == 'preprod'
+    name: "Deploy to PREPROD-EN"
+    needs: deploy-preprod
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
