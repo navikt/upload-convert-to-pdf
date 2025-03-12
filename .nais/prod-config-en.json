@@ -1,0 +1,19 @@
+{
+  "accessPolicyInbound": {
+    "current-namespace": [],
+    "other-namespace": [
+      {
+        "application": "innsending-api",
+        "namespace": "team-soknad"
+      },
+      {
+        "application": "skjemautfylling",
+        "namespace": "skjemadigitalisering"
+      }
+    ]
+  },
+  "ingresses": [],
+  "app-name": "upload-convert-to-pdf-en",
+  "image": "europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:en-8.17.3"
+
+}
