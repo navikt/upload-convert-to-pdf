@@ -17,6 +17,11 @@ spec:
     - "--webhook-disable"
   port: 3000
 
+  readiness:
+    path: /health
+    initialDelay: 20
+    timeout: 5
+    failureThreshold: 10
   liveness:
     path: /health
     initialDelay: 60
