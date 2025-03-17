@@ -17,6 +17,14 @@
       {
         "application": "skjemautfylling-preprod-alt",
         "namespace": "skjemadigitalisering"
+      },
+      {
+        "application": "skjemautfylling-delingslenke",
+        "namespace": "skjemadigitalisering"
+      },
+      {
+        "application": "skjemautfylling",
+        "namespace": "skjemadigitalisering"
       }
     ]
   },
