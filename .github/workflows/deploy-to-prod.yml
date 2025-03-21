@@ -25,3 +25,15 @@ jobs:
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
 
+  deploy-en:
+    name: "Deploy to PROD-EN"
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/prod-config-en.json
+

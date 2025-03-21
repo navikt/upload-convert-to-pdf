@@ -1,0 +1,6 @@
+ARG version
+FROM gotenberg/gotenberg:${version}
+
+USER root
+
+USER gotenberg

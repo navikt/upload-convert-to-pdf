@@ -34,6 +34,19 @@ jobs:
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/prod-config.json
 
+  deploy-prod-en:
+    if: github.event.inputs.environment == 'prod'
+    name: "Deploy to PROD-EN"
+    needs: deploy-prod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/prod-config-en.json
+
 
   deploy-preprod:
     if: github.event.inputs.environment == 'preprod'
@@ -47,3 +60,15 @@ jobs:
           RESOURCE: .nais/nais-gcp.yml
           VARS: .nais/preprod-config.json
 
+  deploy-preprod-en:
+    if: github.event.inputs.environment == 'preprod'
+    name: "Deploy to PREPROD-EN"
+    needs: deploy-preprod
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/nais-gcp.yml
+          VARS: .nais/preprod-config-en.json
