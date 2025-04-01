@@ -29,8 +29,8 @@
     ]
   },
   "ingresses": [
-    "https://convert-to-pdf.intern.dev.nav.no"
+    "https://convert-to-pdf-en.intern.dev.nav.no"
   ],
-  "app-name": "upload-convert-to-pdf",
-  "image": "europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:8.17.3"
+  "app-name": "upload-convert-to-pdf-en",
+  "image": "europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:en-8.17.3"
 }

@@ -33,3 +33,25 @@ jobs:
             version=${{ inputs.gotenbergVersion }}
           pull: true
           tag: ${{ github.event.inputs.navGotenbergVersion || github.event.inputs.gotenbergVersion }}
+
+  build-en:
+    name: "Build-en"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      packages: 'write'
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Build and push Docker image"
+        uses: nais/docker-build-push@v0
+        with:
+          dockerfile: Dockerfile-en
+          team: fyllut-sendinn
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          build_args: |
+            version=${{ inputs.gotenbergVersion }}
+          pull: true
+          tag: en-${{ github.event.inputs.navGotenbergVersion || github.event.inputs.gotenbergVersion }}
