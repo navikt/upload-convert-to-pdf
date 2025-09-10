@@ -1,5 +1,5 @@
 ARG version
-FROM gotenberg/gotenberg:${version}
+FROM gotenberg/gotenberg:8.23.0
 
 USER root
 
@@ -16,5 +16,7 @@ RUN apt-get update -qq &&\
 ENV LANG=nb_NO.UTF-8
 ENV LANGUAGE=nb_NO:nb
 ENV LC_ALL=nb_NO.UTF-8
+
+COPY /fonts/* /usr/local/share/fonts/
 
 USER gotenberg

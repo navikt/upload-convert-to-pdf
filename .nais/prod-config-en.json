@@ -14,6 +14,6 @@
   },
   "ingresses": [],
   "app-name": "upload-convert-to-pdf-en",
-  "image": "europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:en-8.17.3"
+  "image": "europe-north1-docker.pkg.dev/nais-management-233d/fyllut-sendinn/upload-convert-to-pdf:en-8.23.0"
 
 }
