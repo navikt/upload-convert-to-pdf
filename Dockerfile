@@ -13,7 +13,7 @@ USER root
      # For a minimal install, the below might be enough for LibreOffice functionality.
      # If you still need specific locale generation, it's more involved in Alpine.
      # For now, let's remove the problematic Debian locale commands.
-     rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
+     # rm -rf /var/cache/apk/* /tmp/* /var/tmp/*
 
  # Set environment variables for locale (These should still work, but need correct locale setup below)
  ENV LANG=nb_NO.UTF-8
