@@ -22,7 +22,7 @@ jobs:
       id-token: 'write'
       packages: 'write'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: "Build and push Docker image"
         uses: nais/docker-build-push@v0
         with:
@@ -43,7 +43,7 @@ jobs:
       packages: 'write'
     needs: build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: "Build and push Docker image"
         uses: nais/docker-build-push@v0
         with:
