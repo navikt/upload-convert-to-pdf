@@ -11,9 +11,9 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set environment variables for Norwegian Bokmål
-ENV LANG nb_NO.UTF-8
-ENV LANGUAGE nb_NO:nb
-ENV LC_ALL nb_NO.UTF-8
+ENV LANG=nb_NO.UTF-8
+ENV LANGUAGE=nb_NO:nb
+ENV LC_ALL=nb_NO.UTF-8
 
 COPY /fonts/* /usr/local/share/fonts/
 
