@@ -1,0 +1,91 @@
+name: Test Docker images
+
+on:
+  push:
+    branches-ignore: [main]
+    paths:
+      - 'Dockerfile*'
+      - 'fonts/**'
+      - '.github/workflows/test-images.yml'
+  pull_request:
+    paths:
+      - 'Dockerfile*'
+      - 'fonts/**'
+      - '.github/workflows/test-images.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-images-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GOTENBERG_VERSION: 8.39.0
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerfile: [Dockerfile, Dockerfile-en]
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+        with:
+          persist-credentials: false
+      - name: Verify published upstream image contains the Brotli fix
+        run: |
+          docker pull "gotenberg/gotenberg:$GOTENBERG_VERSION"
+          docker image inspect "gotenberg/gotenberg:$GOTENBERG_VERSION" --format '{{json .RepoDigests}}'
+          docker run --rm --entrypoint sh "gotenberg/gotenberg:$GOTENBERG_VERSION" -ec '
+            . /etc/os-release
+            test "$VERSION_CODENAME" = trixie
+            installed_version=$(dpkg-query -W -f="\${Version}" libbrotli1)
+            printf "Upstream libbrotli1: %s\n" "$installed_version"
+            # Debian DSA-6582-1 fixes CVE-2026-111497 with this backport.
+            dpkg --compare-versions "$installed_version" ge "1.1.0-2+deb13u1"
+          '
+      - name: Build without publishing
+        env:
+          DOCKERFILE: ${{ matrix.dockerfile }}
+        run: docker build --pull --build-arg "version=$GOTENBERG_VERSION" --file "$DOCKERFILE" --tag conversion-test .
+      - name: Verify Brotli security backport and non-root user
+        run: |
+          docker run --rm --entrypoint sh conversion-test -ec '
+            . /etc/os-release
+            test "$VERSION_CODENAME" = trixie
+            installed_version=$(dpkg-query -W -f="\${Version}" libbrotli1)
+            printf "libbrotli1: %s\n" "$installed_version"
+            dpkg --compare-versions "$installed_version" ge "1.1.0-2+deb13u1"
+            test "$(id -u)" -ne 0
+            chromium --version
+          '
+      - name: Test LibreOffice and Chromium conversion
+        run: |
+          set -euo pipefail
+          docker run --detach --name conversion-test --publish 127.0.0.1:3000:3000 \
+            conversion-test gotenberg --api-disable-health-check-logging \
+            --libreoffice-auto-start --webhook-disable
+          trap 'docker logs conversion-test; docker rm --force conversion-test' EXIT
+
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:3000/health > /dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          curl --fail --silent --show-error http://127.0.0.1:3000/health
+
+          fixtures=$(mktemp -d)
+          printf 'Conversion test\n' > "$fixtures/document.txt"
+          printf '<!doctype html><html lang="en"><title>Test</title><body>Conversion test</body></html>' > "$fixtures/index.html"
+          curl --fail --silent --show-error --max-time 120 \
+            --form "files=@$fixtures/document.txt" \
+            http://127.0.0.1:3000/forms/libreoffice/convert --output "$fixtures/libreoffice.pdf"
+          curl --fail --silent --show-error --max-time 120 \
+            --form "files=@$fixtures/index.html" \
+            http://127.0.0.1:3000/forms/chromium/convert/html --output "$fixtures/chromium.pdf"
+          for pdf in "$fixtures/libreoffice.pdf" "$fixtures/chromium.pdf"; do
+            test "$(head -c 5 "$pdf")" = '%PDF-'
+          done
