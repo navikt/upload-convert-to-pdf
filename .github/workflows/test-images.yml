@@ -6,11 +6,13 @@ on:
     paths:
       - 'Dockerfile*'
       - 'fonts/**'
+      - '.nais/*-config*.json'
       - '.github/workflows/test-images.yml'
   pull_request:
     paths:
       - 'Dockerfile*'
       - 'fonts/**'
+      - '.nais/*-config*.json'
       - '.github/workflows/test-images.yml'
 
 permissions:
@@ -34,11 +36,26 @@ jobs:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
         with:
           persist-credentials: false
+      - name: Check deployment image versions
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          version = os.environ["GOTENBERG_VERSION"]
+          for path in sorted(Path(".nais").glob("*-config*.json")):
+              tag = json.loads(path.read_text())["image"].rsplit(":", 1)[1]
+              expected = f"en-{version}" if path.name.endswith("-en.json") else version
+              assert tag == expected, f"{path}: expected tag {expected}, got {tag}"
+          PY
       - name: Verify published upstream image contains the Brotli fix
         run: |
           docker pull "gotenberg/gotenberg:$GOTENBERG_VERSION"
-          docker image inspect "gotenberg/gotenberg:$GOTENBERG_VERSION" --format '{{json .RepoDigests}}'
-          docker run --rm --entrypoint sh "gotenberg/gotenberg:$GOTENBERG_VERSION" -ec '
+          upstream_image=$(docker image inspect "gotenberg/gotenberg:$GOTENBERG_VERSION" --format '{{index .RepoDigests 0}}')
+          printf 'Verified upstream image: %s\n' "$upstream_image"
+          printf 'GOTENBERG_BASE=%s@%s\n' "$GOTENBERG_VERSION" "${upstream_image#*@}" >> "$GITHUB_ENV"
+          docker run --rm --entrypoint sh "$upstream_image" -ec '
             . /etc/os-release
             test "$VERSION_CODENAME" = trixie
             installed_version=$(dpkg-query -W -f="\${Version}" libbrotli1)
@@ -49,7 +66,7 @@ jobs:
       - name: Build without publishing
         env:
           DOCKERFILE: ${{ matrix.dockerfile }}
-        run: docker build --pull --build-arg "version=$GOTENBERG_VERSION" --file "$DOCKERFILE" --tag conversion-test .
+        run: docker build --pull --build-arg "version=$GOTENBERG_BASE" --file "$DOCKERFILE" --tag conversion-test .
       - name: Verify Brotli security backport and non-root user
         run: |
           docker run --rm --entrypoint sh conversion-test -ec '
